@@ -1,0 +1,22 @@
+[package]
+name = "kvs"
+version = "0.1.0"
+edition = "2021"
+authors = ["Steven Ferrer <steven.r.ferrer@gmail.com>"]
+description = "A key-value store"
+
+[lib]
+test = false
+
+[[bin]]
+name = "kvs"
+test = false
+doctest = false
+
+[dependencies]
+clap = { version = "3.2.17", features = ["derive", "cargo"] }
+
+[dev-dependencies]
+assert_cmd = "2.0.4"
+predicates = "2.1.1"
+
