@@ -1,33 +1,53 @@
-use clap::{arg, command, Command};
+use clap::{Args, Parser, Subcommand};
+
+#[derive(Parser)]
+#[clap(author, version, about, long_about = None)]
+#[clap(propagate_version = true)]
+struct Cli {
+  #[clap(subcommand)]
+  command: Commands,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+  Set(SetArgs),
+  Get(GetArgs),
+  Rm(RmArgs),
+}
+
+#[derive(Args)]
+struct SetArgs {
+  #[clap(value_parser)]
+  key: String,
+
+  #[clap(value_parser)]
+  value: String,
+}
+
+#[derive(Args)]
+struct GetArgs {
+  #[clap(value_parser)]
+  key: String,
+}
+
+#[derive(Args)]
+struct RmArgs {
+  #[clap(value_parser)]
+  key: String,
+}
 
 fn main() {
-  let matches = command!() // requires `cargo` feature
-    .propagate_version(true)
-    .subcommand_required(true)
-    .arg_required_else_help(true)
-    .subcommand(
-      Command::new("set")
-        .about("Set VALUE for a given KEY")
-        .args(&[arg!(<KEY>), arg!(<VALUE>)]),
-    )
-    .subcommand(
-      Command::new("get")
-        .about("Get VALUE for KEY")
-        .arg(arg!(<KEY>)),
-    )
-    .subcommand(Command::new("rm").about("Remove a KEY").arg(arg!(<KEY>)))
-    .get_matches();
+  let cli = Cli::parse();
 
-  match matches.subcommand() {
-    Some(("set", _)) => {
+  match &cli.command {
+    Commands::Set(_) => {
       panic!("unimplemented")
     }
-    Some(("get", _)) => {
+    Commands::Get(_) => {
       panic!("unimplemented")
     }
-    Some(("rm", _)) => {
+    Commands::Rm(_) => {
       panic!("unimplemented")
     }
-    _ => unimplemented!(),
   }
 }
