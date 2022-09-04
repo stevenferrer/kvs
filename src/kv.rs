@@ -1,31 +1,34 @@
-use std::collections::HashMap;
+use std::path;
+use std::result;
 
 #[derive(Default)]
 /// An in-memory key-value store
-pub struct KvStore {
-    map: HashMap<String, String>,
-}
+pub struct KvStore {}
+
+#[derive(Debug)]
+pub struct Error;
+
+/// KVS result
+pub type Result<T> = result::Result<T, Error>;
 
 impl KvStore {
-    /// Constructs a KvStore
-    pub fn new() -> KvStore {
-        KvStore {
-            map: HashMap::new(),
-        }
+    /// Open kv-store file
+    pub fn open(_: impl Into<path::PathBuf>) -> Result<KvStore> {
+        panic!("unimplemented")
     }
 
     /// Sets a given key with value
-    pub fn set(&mut self, key: String, value: String) {
-        self.map.insert(key, value);
+    pub fn set(&mut self, _: String, _: String) -> Result<()> {
+        panic!("unimplemented")
     }
 
     /// Retrieves the value for a given key
-    pub fn get(&mut self, k: String) -> Option<String> {
-        self.map.get(&k).map(|v| v.to_string())
+    pub fn get(&mut self, _: String) -> Result<Option<String>> {
+        panic!("unimplemented")
     }
 
     /// Removes the entry for a given key
-    pub fn remove(&mut self, key: String) {
-        self.map.remove(&key);
+    pub fn remove(&mut self, _: String) -> Result<()> {
+        panic!("unimplemented")
     }
 }
