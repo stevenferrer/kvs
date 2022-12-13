@@ -32,3 +32,9 @@ impl KvStore {
         panic!("unimplemented")
     }
 }
+
+impl Drop for KvStore {
+    fn drop(&mut self) {
+        todo!()
+    }
+}
