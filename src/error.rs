@@ -1,6 +1,6 @@
 /// Error types
 #[derive(thiserror::Error, Debug)]
-pub enum KvsError {
+pub enum Error {
     /// Io error
     #[error("io error")]
     Io(#[from] std::io::Error),
@@ -19,4 +19,4 @@ pub enum KvsError {
 }
 
 /// Result type
-pub type Result<T> = std::result::Result<T, KvsError>;
+pub type Result<T> = std::result::Result<T, Error>;

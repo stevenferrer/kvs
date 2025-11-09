@@ -2,9 +2,9 @@ use std::env::current_dir;
 use std::process::exit;
 
 use clap::{arg, command, Command};
-use kvs::KvStore;
-use kvs::KvsError;
+use kvs::Error;
 use kvs::Result;
+use kvs::DB;
 
 fn main() -> Result<()> {
     let cmd = command!()
@@ -33,14 +33,14 @@ fn main() -> Result<()> {
             let key = matches.get_one::<String>("key").expect("required");
             let value = matches.get_one::<String>("value").expect("required");
 
-            let mut store = KvStore::open(current_dir()?)?;
-            store.set(key.to_string(), value.to_string())?;
+            let mut db = DB::open(current_dir()?)?;
+            db.set(key.to_string(), value.to_string())?;
         }
         Some(("get", matches)) => {
             let key = matches.get_one::<String>("key").expect("required");
 
-            let mut store = KvStore::open(current_dir()?)?;
-            if let Some(value) = store.get(key.to_string())? {
+            let mut db = DB::open(current_dir()?)?;
+            if let Some(value) = db.get(key.to_string())? {
                 println!("{}", value);
             } else {
                 println!("Key not found");
@@ -49,10 +49,10 @@ fn main() -> Result<()> {
         Some(("rm", matches)) => {
             let key = matches.get_one::<String>("key").expect("required");
 
-            let mut store = KvStore::open(current_dir()?)?;
-            match store.remove(key.to_string()) {
+            let mut db = DB::open(current_dir()?)?;
+            match db.remove(key.to_string()) {
                 Ok(()) => {}
-                Err(KvsError::KeyNotFound) => {
+                Err(Error::KeyNotFound) => {
                     println!("Key not found");
                     exit(1)
                 }
